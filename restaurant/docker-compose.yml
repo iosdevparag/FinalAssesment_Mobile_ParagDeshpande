@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: restaurant-db-cont
+    restart: always
+    environment:
+      POSTGRES_USER: parag
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: restaurant
+    ports:
+      - "5433:5432"
+    volumes:
+      - /Users/paragdeshpande2/Documents/res-db:/var/lib/postgresql/data
+  app:
+    build: .
+    image: restaurant-app
+    container_name: restaurant-app-cont
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/restaurant
+      SPRING_DATASOURCE_USERNAME: parag
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - db
